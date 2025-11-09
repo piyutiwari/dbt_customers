@@ -1,0 +1,54 @@
+name: 'dbt_postgres_medallion'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'postgres_medallion'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+# Configuring models
+models:
+  dbt_postgres_medallion:
+    # Bronze layer - raw data ingestion (materialized as views for efficiency)
+    bronze:
+      +materialized: view
+      +schema: bronze
+      +tags: ["bronze", "raw"]
+
+    # Silver layer - cleaned and transformed data (materialized as tables)
+    silver:
+      +materialized: table
+      +schema: silver
+      +tags: ["silver", "cleansed"]
+
+    # Gold layer - business-level aggregates (materialized as tables)
+    gold:
+      +materialized: table
+      +schema: gold
+      +tags: ["gold", "aggregated"]
+
+# Seed configuration
+seeds:
+  dbt_postgres_medallion:
+    +schema: bronze
+    +tags: ["seed", "bronze"]
+
+# Snapshot configuration
+snapshots:
+  dbt_postgres_medallion:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +unique_key: id
+    +updated_at: updated_at

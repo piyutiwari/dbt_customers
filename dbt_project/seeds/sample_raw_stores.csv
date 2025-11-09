@@ -1,0 +1,11 @@
+store_id,store_name,store_type,address,city,state,country,postal_code,phone,manager_name,opened_at,updated_at
+201,Downtown Flagship,flagship,123 Main Street,New York,NY,USA,10001,212-555-0101,Sarah Johnson,2020-01-15,2024-01-01
+202,West Side Market,standard,456 West Avenue,Los Angeles,CA,USA,90001,213-555-0202,Michael Chen,2020-06-20,2024-01-01
+203,Chicago Loop Store,standard,789 Michigan Ave,Chicago,IL,USA,60601,312-555-0303,Jennifer Williams,2021-03-10,2024-01-01
+204,Austin Tech Hub,flagship,321 Congress Ave,Austin,TX,USA,78701,512-555-0404,Robert Martinez,2021-09-05,2024-01-01
+205,Seattle Center,standard,654 Pike Street,Seattle,WA,USA,98101,206-555-0505,Emily Davis,2022-01-20,2024-01-01
+206,Boston Commons,standard,987 Boylston Street,Boston,MA,USA,02116,617-555-0606,David Anderson,2022-05-15,2024-01-01
+207,Miami Beach Outlet,outlet,147 Ocean Drive,Miami,FL,USA,33139,305-555-0707,Maria Garcia,2022-08-01,2024-01-01
+208,Denver Mountain,standard,258 16th Street,Denver,CO,USA,80202,303-555-0808,James Wilson,2023-02-10,2024-01-01
+209,Portland Pearl,standard,369 Pearl District,Portland,OR,USA,97209,503-555-0909,Lisa Thompson,2023-06-15,2024-01-01
+210,Atlanta Midtown,flagship,741 Peachtree St,Atlanta,GA,USA,30308,404-555-1010,Kevin Brown,2023-11-01,2024-01-01

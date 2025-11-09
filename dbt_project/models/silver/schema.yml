@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: silver_customers
+    description: "Silver layer - Cleaned and standardized customer data"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_name
+        description: "Standardized customer name"
+      - name: email
+        description: "Validated and lowercase email"
+        tests:
+          - not_null
+      - name: email_domain
+        description: "Extracted email domain"
+      - name: created_at
+        description: "Record creation timestamp"
+      - name: is_active
+        description: "Customer activity status"
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_orders
+    description: "Silver layer - Cleaned and enriched order data"
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer who placed the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_customers')
+              field: customer_id
+      - name: order_date
+        description: "Order date"
+      - name: amount
+        description: "Order amount"
+        tests:
+          - not_null
+      - name: is_valid_order
+        description: "Flag indicating if order passes validation rules"
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"

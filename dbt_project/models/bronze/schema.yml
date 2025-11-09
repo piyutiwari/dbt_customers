@@ -1,0 +1,210 @@
+version: 2
+
+sources:
+  - name: raw_data
+    description: "Raw data source - could be from external systems, APIs, or file uploads"
+    schema: public
+    tables:
+      - name: raw_customers
+        description: "Raw customer data"
+        columns:
+          - name: customer_id
+            description: "Unique customer identifier"
+            tests:
+              - not_null
+          - name: customer_name
+            description: "Customer name"
+          - name: email
+            description: "Customer email"
+          - name: created_at
+            description: "Record creation timestamp"
+
+      - name: raw_orders
+        description: "Raw order data"
+        columns:
+          - name: order_id
+            description: "Unique order identifier"
+            tests:
+              - not_null
+          - name: customer_id
+            description: "Customer who placed the order"
+          - name: order_date
+            description: "Order date"
+          - name: amount
+            description: "Order amount"
+
+      - name: raw_products
+        description: "Raw product catalog data"
+        columns:
+          - name: product_id
+            description: "Unique product identifier"
+            tests:
+              - not_null
+              - unique
+          - name: product_name
+            description: "Product name"
+          - name: category
+            description: "Product category"
+          - name: subcategory
+            description: "Product subcategory"
+          - name: price
+            description: "Retail price"
+          - name: cost
+            description: "Cost of goods sold"
+          - name: supplier
+            description: "Supplier name"
+          - name: sku
+            description: "Stock keeping unit"
+          - name: created_at
+            description: "Product creation timestamp"
+          - name: updated_at
+            description: "Last update timestamp"
+
+      - name: raw_payments
+        description: "Raw payment transaction data"
+        columns:
+          - name: payment_id
+            description: "Unique payment identifier"
+            tests:
+              - not_null
+              - unique
+          - name: order_id
+            description: "Associated order ID"
+            tests:
+              - not_null
+          - name: payment_method
+            description: "Payment method (credit_card, debit_card, paypal, etc.)"
+          - name: payment_status
+            description: "Payment status (completed, pending, failed, refunded)"
+          - name: transaction_amount
+            description: "Transaction amount"
+          - name: processing_fee
+            description: "Payment processing fee"
+          - name: gateway
+            description: "Payment gateway (Stripe, PayPal, Square)"
+          - name: card_last_four
+            description: "Last 4 digits of card (if applicable)"
+          - name: processed_at
+            description: "Payment processing timestamp"
+          - name: updated_at
+            description: "Last update timestamp"
+
+      - name: raw_customer_events
+        description: "Raw customer behavioral event data"
+        columns:
+          - name: event_id
+            description: "Unique event identifier"
+            tests:
+              - not_null
+              - unique
+          - name: customer_id
+            description: "Customer who triggered the event"
+          - name: event_type
+            description: "Type of event (page_view, product_view, add_to_cart, purchase, etc.)"
+          - name: event_category
+            description: "Event category (navigation, engagement, conversion)"
+          - name: page_url
+            description: "URL where event occurred"
+          - name: session_id
+            description: "Session identifier"
+          - name: device_type
+            description: "Device type (desktop, mobile, tablet)"
+          - name: browser
+            description: "Browser used"
+          - name: event_timestamp
+            description: "Event timestamp"
+          - name: created_at
+            description: "Record creation timestamp"
+
+      - name: raw_stores
+        description: "Raw store location data"
+        columns:
+          - name: store_id
+            description: "Unique store identifier"
+            tests:
+              - not_null
+              - unique
+          - name: store_name
+            description: "Store name"
+          - name: store_type
+            description: "Store type (flagship, standard, outlet)"
+          - name: address
+            description: "Street address"
+          - name: city
+            description: "City"
+          - name: state
+            description: "State"
+          - name: country
+            description: "Country"
+          - name: postal_code
+            description: "Postal code"
+          - name: phone
+            description: "Store phone number"
+          - name: manager_name
+            description: "Store manager name"
+          - name: opened_at
+            description: "Store opening date"
+          - name: updated_at
+            description: "Last update timestamp"
+
+      - name: raw_inventory
+        description: "Raw inventory level data"
+        columns:
+          - name: inventory_id
+            description: "Unique inventory record identifier"
+            tests:
+              - not_null
+              - unique
+          - name: product_id
+            description: "Product identifier"
+            tests:
+              - not_null
+          - name: store_id
+            description: "Store identifier"
+            tests:
+              - not_null
+          - name: quantity_on_hand
+            description: "Current quantity available"
+          - name: reorder_point
+            description: "Quantity threshold for reordering"
+          - name: reorder_quantity
+            description: "Quantity to order when restocking"
+          - name: last_restocked_at
+            description: "Last restock timestamp"
+          - name: updated_at
+            description: "Last update timestamp"
+
+models:
+  - name: bronze_customers
+    description: "Bronze layer - Raw customer data with minimal transformation"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_name
+        description: "Customer name"
+      - name: email
+        description: "Customer email"
+      - name: created_at
+        description: "Record creation timestamp"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_orders
+    description: "Bronze layer - Raw order data with minimal transformation"
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer who placed the order"
+      - name: order_date
+        description: "Order date"
+      - name: amount
+        description: "Order amount"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
