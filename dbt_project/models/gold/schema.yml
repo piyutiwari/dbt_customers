@@ -50,3 +50,314 @@ models:
         description: "Number of unique customers who ordered"
       - name: aggregated_at
         description: "Timestamp when metrics were aggregated"
+
+  - name: gold_product_performance
+    description: "Gold layer - Product performance analytics with revenue, profit, and inventory metrics"
+    columns:
+      - name: product_id
+        description: "Unique product identifier"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Product name"
+      - name: category
+        description: "Product category"
+      - name: category_group
+        description: "High-level category grouping"
+      - name: price_tier
+        description: "Price tier classification"
+      - name: current_catalog_price
+        description: "Current catalog selling price"
+      - name: current_cost
+        description: "Current product cost"
+      - name: current_catalog_profit_margin
+        description: "Current catalog profit margin percentage"
+      - name: supplier
+        description: "Product supplier"
+      - name: total_inventory_value
+        description: "Total value of inventory across all stores"
+      - name: stores_carrying_product
+        description: "Number of stores carrying this product"
+      - name: stores_needing_reorder
+        description: "Number of stores that need to reorder this product"
+      - name: total_revenue
+        description: "Total revenue from actual product sales (from order_items)"
+      - name: total_units_sold
+        description: "Total units sold (from order_items)"
+      - name: average_selling_price
+        description: "Average selling price from actual sales"
+      - name: total_profit
+        description: "Total profit from product sales"
+      - name: avg_profit_margin_pct
+        description: "Average profit margin percentage from actual sales"
+      - name: total_discounts_given
+        description: "Total discount amount applied to this product"
+      - name: avg_discount_pct
+        description: "Average discount percentage"
+      - name: orders_containing_product
+        description: "Number of orders that included this product"
+      - name: unique_customers
+        description: "Number of unique customers who purchased this product"
+      - name: revenue_per_unit
+        description: "Average revenue per unit sold"
+      - name: profit_per_unit
+        description: "Average profit per unit sold"
+      - name: avg_units_sold_per_day
+        description: "Sales velocity: average units sold per day since first sale"
+      - name: first_sale_date
+        description: "Date of first sale"
+      - name: last_sale_date
+        description: "Date of most recent sale"
+      - name: days_since_last_sale
+        description: "Days elapsed since last sale"
+      - name: never_sold
+        description: "Flag indicating product has never been sold"
+      - name: inactive_product
+        description: "Flag indicating no sales in 90+ days"
+      - name: calculated_at
+        description: "Timestamp when metrics were calculated"
+
+  - name: gold_store_performance
+    description: "Gold layer - Store performance metrics with inventory analytics and operational health"
+    columns:
+      - name: store_id
+        description: "Unique store identifier"
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: "Store name"
+      - name: store_type
+        description: "Type of store"
+      - name: city
+        description: "Store city"
+      - name: state
+        description: "Store state"
+      - name: region
+        description: "Geographic region"
+      - name: store_age_days
+        description: "Days since store opened"
+      - name: store_age_category
+        description: "Age classification (New, Established, Mature)"
+      - name: total_inventory_value
+        description: "Total value of inventory at this store"
+      - name: unique_products_in_stock
+        description: "Number of unique products in stock"
+      - name: products_needing_reorder
+        description: "Number of products below reorder point"
+      - name: avg_inventory_value_per_product
+        description: "Average inventory value per product"
+      - name: critical_stock_items
+        description: "Number of items with critical stock status"
+      - name: overstock_items
+        description: "Number of overstocked items"
+      - name: last_restock_date
+        description: "Most recent restock date"
+      - name: avg_days_since_restock
+        description: "Average days since last restock across all products"
+      - name: inventory_value_per_day_open
+        description: "Store utilization metric: inventory value per day of operation"
+      - name: inventory_health_status
+        description: "Overall inventory health: Good, Fair, or Poor"
+      - name: calculated_at
+        description: "Timestamp when metrics were calculated"
+
+  - name: gold_payment_analytics
+    description: "Gold layer - Payment method analytics with transaction volumes, fees, and success rates"
+    columns:
+      - name: payment_method
+        description: "Payment method (credit_card, debit_card, paypal, etc.)"
+        tests:
+          - not_null
+      - name: total_transactions
+        description: "Total number of transactions"
+      - name: successful_transactions
+        description: "Number of successful transactions"
+      - name: failed_transactions
+        description: "Number of failed transactions"
+      - name: refunded_transactions
+        description: "Number of refunded transactions"
+      - name: total_transaction_volume
+        description: "Total transaction amount across all statuses"
+      - name: successful_transaction_volume
+        description: "Total amount from successful transactions"
+      - name: total_fees_paid
+        description: "Total processing fees paid"
+      - name: total_net_amount
+        description: "Total net amount after fees"
+      - name: avg_transaction_amount
+        description: "Average transaction amount"
+      - name: avg_processing_fee
+        description: "Average processing fee"
+      - name: avg_processing_fee_percentage
+        description: "Average processing fee as percentage"
+      - name: success_rate_pct
+        description: "Success rate percentage"
+      - name: failure_rate_pct
+        description: "Failure rate percentage"
+      - name: refund_rate_pct
+        description: "Refund rate percentage"
+      - name: suspicious_transaction_count
+        description: "Number of suspicious transactions"
+      - name: suspicious_rate_pct
+        description: "Suspicious transaction rate percentage"
+      - name: first_transaction_date
+        description: "Date of first transaction for this payment method"
+      - name: last_transaction_date
+        description: "Date of most recent transaction"
+      - name: pct_of_total_volume
+        description: "Percentage of total transaction volume"
+      - name: pct_of_total_transactions
+        description: "Percentage of total transaction count"
+      - name: calculated_at
+        description: "Timestamp when metrics were calculated"
+
+  - name: gold_customer_funnel
+    description: "Gold layer - Customer conversion funnel analytics with rates by device and browser"
+    columns:
+      - name: dimension_type
+        description: "Dimension category: Overall, Device, or Browser"
+        tests:
+          - not_null
+      - name: dimension_value
+        description: "Specific value for the dimension"
+        tests:
+          - not_null
+      - name: page_views
+        description: "Total page view events"
+      - name: product_views
+        description: "Total product view events"
+      - name: add_to_cart
+        description: "Total add to cart events"
+      - name: checkout_started
+        description: "Total checkout started events"
+      - name: purchases
+        description: "Total purchase events"
+      - name: unique_viewers
+        description: "Unique customers who viewed pages"
+      - name: unique_product_viewers
+        description: "Unique customers who viewed products"
+      - name: unique_cart_users
+        description: "Unique customers who added to cart"
+      - name: unique_checkout_users
+        description: "Unique customers who started checkout"
+      - name: unique_buyers
+        description: "Unique customers who completed purchase"
+      - name: total_sessions
+        description: "Total number of sessions"
+      - name: overall_conversion_rate
+        description: "Overall conversion rate: purchases / page_views"
+      - name: page_to_product_rate
+        description: "Conversion from page views to product views"
+      - name: product_to_cart_rate
+        description: "Conversion from product views to cart adds"
+      - name: cart_to_checkout_rate
+        description: "Conversion from cart to checkout"
+      - name: checkout_to_purchase_rate
+        description: "Conversion from checkout to purchase"
+      - name: cart_abandonment_rate
+        description: "Cart abandonment rate percentage"
+      - name: checkout_abandonment_rate
+        description: "Checkout abandonment rate percentage"
+      - name: user_conversion_rate
+        description: "User-based conversion rate: unique buyers / unique viewers"
+      - name: calculated_at
+        description: "Timestamp when metrics were calculated"
+
+  - name: gold_inventory_alerts
+    description: "Gold layer - Actionable inventory alerts prioritized by severity for operations teams"
+    columns:
+      - name: inventory_id
+        description: "Unique inventory record identifier"
+      - name: product_id
+        description: "Product identifier"
+      - name: product_name
+        description: "Product name"
+      - name: product_category
+        description: "Product category"
+      - name: store_id
+        description: "Store identifier"
+      - name: store_name
+        description: "Store name"
+      - name: store_city
+        description: "Store city"
+      - name: store_state
+        description: "Store state"
+      - name: quantity_on_hand
+        description: "Current quantity on hand"
+      - name: reorder_point
+        description: "Reorder point threshold"
+      - name: inventory_value
+        description: "Value of this inventory record"
+      - name: days_since_restock
+        description: "Days since last restock"
+      - name: stock_status
+        description: "Stock status (Critical, Low, Normal, Overstock)"
+      - name: alert_type
+        description: "Type of alert (Critical Stock, Low Stock, Overstock, etc.)"
+        tests:
+          - not_null
+      - name: severity
+        description: "Alert severity (High, Medium, Low)"
+        tests:
+          - accepted_values:
+              values: ['High', 'Medium', 'Low']
+      - name: alert_message
+        description: "Actionable alert message for operations team"
+      - name: priority_rank
+        description: "Priority ranking (1 = highest priority)"
+      - name: alert_generated_at
+        description: "Timestamp when alert was generated"
+
+  - name: gold_daily_customer_events
+    description: "Gold layer - Daily aggregated customer event metrics (incremental)"
+    columns:
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+      - name: event_date
+        description: "Date of events"
+        tests:
+          - not_null
+      - name: total_events
+        description: "Total events for this customer on this day"
+      - name: page_views
+        description: "Page view events count"
+      - name: product_views
+        description: "Product view events count"
+      - name: add_to_cart
+        description: "Add to cart events count"
+      - name: checkouts
+        description: "Checkout events count"
+      - name: purchases
+        description: "Purchase events count"
+      - name: sessions_count
+        description: "Number of distinct sessions"
+      - name: avg_events_per_session
+        description: "Average events per session"
+      - name: unique_devices_used
+        description: "Number of unique device types used"
+      - name: unique_browsers_used
+        description: "Number of unique browsers used"
+      - name: primary_device_category
+        description: "Primary device category used"
+      - name: primary_browser
+        description: "Primary browser used"
+      - name: had_conversion
+        description: "Flag indicating if customer had any conversion event"
+      - name: made_purchase
+        description: "Flag indicating if customer made a purchase"
+      - name: first_event_time
+        description: "Timestamp of first event"
+      - name: last_event_time
+        description: "Timestamp of last event"
+      - name: total_active_minutes
+        description: "Total minutes between first and last event"
+      - name: customer_name
+        description: "Customer name"
+      - name: customer_email
+        description: "Customer email"
+      - name: calculated_at
+        description: "Timestamp when metrics were calculated"

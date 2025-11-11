@@ -174,6 +174,31 @@ sources:
           - name: updated_at
             description: "Last update timestamp"
 
+      - name: raw_order_items
+        description: "Raw order line item data linking orders to products"
+        columns:
+          - name: order_item_id
+            description: "Unique order item identifier"
+            tests:
+              - not_null
+              - unique
+          - name: order_id
+            description: "Associated order ID"
+            tests:
+              - not_null
+          - name: product_id
+            description: "Associated product ID"
+            tests:
+              - not_null
+          - name: quantity
+            description: "Quantity ordered"
+          - name: unit_price
+            description: "Price per unit at time of order"
+          - name: discount
+            description: "Discount amount applied"
+          - name: line_total
+            description: "Total for this line item (quantity * unit_price - discount)"
+
 models:
   - name: bronze_customers
     description: "Bronze layer - Raw customer data with minimal transformation"
@@ -206,5 +231,183 @@ models:
         description: "Order date"
       - name: amount
         description: "Order amount"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_products
+    description: "Bronze layer - Raw product data with minimal transformation"
+    columns:
+      - name: product_id
+        description: "Unique product identifier"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Product name"
+      - name: category
+        description: "Product category"
+      - name: subcategory
+        description: "Product subcategory"
+      - name: price
+        description: "Retail price"
+      - name: cost
+        description: "Cost of goods sold"
+      - name: supplier
+        description: "Supplier name"
+      - name: sku
+        description: "Stock keeping unit"
+      - name: created_at
+        description: "Product creation timestamp"
+      - name: updated_at
+        description: "Last update timestamp"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_payments
+    description: "Bronze layer - Raw payment data with minimal transformation"
+    columns:
+      - name: payment_id
+        description: "Unique payment identifier"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Associated order ID"
+      - name: payment_method
+        description: "Payment method"
+      - name: payment_status
+        description: "Payment status"
+      - name: transaction_amount
+        description: "Transaction amount"
+      - name: processing_fee
+        description: "Payment processing fee"
+      - name: gateway
+        description: "Payment gateway"
+      - name: card_last_four
+        description: "Last 4 digits of card"
+      - name: processed_at
+        description: "Payment processing timestamp"
+      - name: updated_at
+        description: "Last update timestamp"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_customer_events
+    description: "Bronze layer - Raw customer event data with minimal transformation"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer who triggered the event"
+      - name: event_type
+        description: "Type of event"
+      - name: event_category
+        description: "Event category"
+      - name: page_url
+        description: "URL where event occurred"
+      - name: session_id
+        description: "Session identifier"
+      - name: device_type
+        description: "Device type"
+      - name: browser
+        description: "Browser used"
+      - name: event_timestamp
+        description: "Event timestamp"
+      - name: created_at
+        description: "Record creation timestamp"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_stores
+    description: "Bronze layer - Raw store data with minimal transformation"
+    columns:
+      - name: store_id
+        description: "Unique store identifier"
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: "Store name"
+      - name: store_type
+        description: "Store type"
+      - name: address
+        description: "Street address"
+      - name: city
+        description: "City"
+      - name: state
+        description: "State"
+      - name: country
+        description: "Country"
+      - name: postal_code
+        description: "Postal code"
+      - name: phone
+        description: "Store phone number"
+      - name: manager_name
+        description: "Store manager name"
+      - name: opened_at
+        description: "Store opening date"
+      - name: updated_at
+        description: "Last update timestamp"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_inventory
+    description: "Bronze layer - Raw inventory data with minimal transformation"
+    columns:
+      - name: inventory_id
+        description: "Unique inventory record identifier"
+        tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "Product identifier"
+      - name: store_id
+        description: "Store identifier"
+      - name: quantity_on_hand
+        description: "Current quantity available"
+      - name: reorder_point
+        description: "Quantity threshold for reordering"
+      - name: reorder_quantity
+        description: "Quantity to order when restocking"
+      - name: last_restocked_at
+        description: "Last restock timestamp"
+      - name: updated_at
+        description: "Last update timestamp"
+      - name: loaded_at
+        description: "Timestamp when data was loaded into bronze layer"
+
+  - name: bronze_order_items
+    description: "Bronze layer - Raw order line item data with minimal transformation"
+    columns:
+      - name: order_item_id
+        description: "Unique order item identifier"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Associated order ID"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Associated product ID"
+        tests:
+          - not_null
+      - name: quantity
+        description: "Quantity ordered"
+        tests:
+          - not_null
+      - name: unit_price
+        description: "Price per unit at time of order"
+        tests:
+          - not_null
+      - name: discount
+        description: "Discount amount applied"
+      - name: line_total
+        description: "Total for this line item"
+        tests:
+          - not_null
       - name: loaded_at
         description: "Timestamp when data was loaded into bronze layer"

@@ -49,3 +49,315 @@ models:
         description: "Flag indicating if order passes validation rules"
       - name: processed_at
         description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_products
+    description: "Silver layer - Cleaned and enriched product data with profit margins and classifications"
+    columns:
+      - name: product_id
+        description: "Unique product identifier"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Cleaned and standardized product name (trimmed, proper case)"
+        tests:
+          - not_null
+      - name: category
+        description: "Standardized product category (uppercase)"
+        tests:
+          - not_null
+      - name: subcategory
+        description: "Product subcategory (proper case)"
+      - name: price
+        description: "Product selling price"
+        tests:
+          - not_null
+      - name: cost
+        description: "Product cost"
+        tests:
+          - not_null
+      - name: supplier
+        description: "Product supplier (defaults to 'Unknown' if missing)"
+      - name: sku
+        description: "Stock keeping unit (uppercase, trimmed)"
+        tests:
+          - unique
+          - not_null
+      - name: profit_margin
+        description: "Calculated profit margin percentage: (price - cost) / price * 100"
+      - name: category_group
+        description: "High-level category grouping (Tech & Office, Fashion & Accessories, etc.)"
+        tests:
+          - accepted_values:
+              values: ['Tech & Office', 'Fashion & Accessories', 'Home & Living', 'Sports & Outdoors', 'Books & Media', 'Other']
+      - name: price_tier
+        description: "Price classification: Budget (<$20), Mid ($20-$75), Premium (>$75)"
+        tests:
+          - accepted_values:
+              values: ['Budget', 'Mid', 'Premium', 'Unknown']
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_payments
+    description: "Silver layer - Validated payment transactions with fee calculations and fraud flags"
+    columns:
+      - name: payment_id
+        description: "Unique payment identifier"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Associated order identifier"
+        tests:
+          - not_null
+      - name: payment_method
+        description: "Normalized payment method (credit_card, debit_card, paypal, etc.)"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Payment transaction amount"
+        tests:
+          - not_null
+      - name: processing_fee
+        description: "Fee charged for processing the payment"
+      - name: net_amount
+        description: "Net amount after processing fees: transaction_amount - processing_fee"
+      - name: processing_fee_percentage
+        description: "Processing fee as percentage of transaction amount"
+      - name: payment_gateway
+        description: "Payment gateway used for the transaction"
+      - name: payment_status
+        description: "Status of the payment transaction"
+      - name: transaction_date
+        description: "Date of the transaction"
+      - name: is_successful
+        description: "Boolean flag: true for completed/success/approved payments"
+      - name: is_suspicious
+        description: "Boolean flag for suspicious transactions (high fees, unusual patterns)"
+      - name: has_valid_order
+        description: "Boolean flag indicating if order_id exists in orders table"
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_stores
+    description: "Silver layer - Cleaned store location data with regional classifications and age calculations"
+    columns:
+      - name: store_id
+        description: "Unique store identifier"
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: "Standardized store name (trimmed, proper case)"
+        tests:
+          - not_null
+      - name: address
+        description: "Standardized street address"
+      - name: city
+        description: "Store city (proper case)"
+      - name: state
+        description: "Store state (uppercase, 2-letter code)"
+        tests:
+          - not_null
+      - name: zip_code
+        description: "Store ZIP code"
+      - name: full_address
+        description: "Concatenated full address string"
+      - name: phone
+        description: "Store phone number (numeric only)"
+      - name: store_type
+        description: "Type of store location"
+      - name: opened_at
+        description: "Date when store opened"
+        tests:
+          - not_null
+      - name: store_age_days
+        description: "Number of days since store opened"
+      - name: store_age_category
+        description: "Store age classification: New (<1yr), Established (1-3yr), Mature (>3yr)"
+        tests:
+          - accepted_values:
+              values: ['New', 'Established', 'Mature', 'Unknown']
+      - name: region
+        description: "US geographic region: West, East, Central, South"
+        tests:
+          - accepted_values:
+              values: ['West', 'East', 'Central', 'South', 'Other']
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_inventory
+    description: "Silver layer - Enriched inventory data with product/store details, value calculations, and reorder flags"
+    columns:
+      - name: inventory_id
+        description: "Unique inventory record identifier"
+        tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_products')
+              field: product_id
+      - name: store_id
+        description: "Store identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_stores')
+              field: store_id
+      - name: quantity_on_hand
+        description: "Current inventory quantity"
+        tests:
+          - not_null
+      - name: reorder_point
+        description: "Quantity threshold triggering reorder"
+      - name: reorder_quantity
+        description: "Standard reorder quantity"
+      - name: last_restocked_at
+        description: "Date of last inventory restock"
+      - name: product_name
+        description: "Product name (from products table)"
+      - name: product_category
+        description: "Product category (from products table)"
+      - name: product_cost
+        description: "Product cost (from products table)"
+      - name: product_price
+        description: "Product price (from products table)"
+      - name: store_name
+        description: "Store name (from stores table)"
+      - name: store_city
+        description: "Store city (from stores table)"
+      - name: store_state
+        description: "Store state (from stores table)"
+      - name: inventory_value
+        description: "Calculated inventory value: quantity_on_hand * product_cost"
+      - name: days_since_restock
+        description: "Days elapsed since last_restocked_at"
+      - name: needs_reorder
+        description: "Boolean flag: true if quantity_on_hand <= reorder_point"
+      - name: stock_level_percentage
+        description: "Stock level as percentage of reorder quantity"
+      - name: stock_status
+        description: "Inventory status classification: Critical, Low, Normal, Overstock"
+        tests:
+          - accepted_values:
+              values: ['Critical', 'Low', 'Normal', 'Overstock']
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_customer_events
+    description: "Silver layer - Cleaned behavioral event data with customer enrichment and event classifications"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer who triggered the event"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_customers')
+              field: customer_id
+      - name: session_id
+        description: "Session identifier grouping related events"
+        tests:
+          - not_null
+      - name: event_type
+        description: "Type of event (page_view, product_view, add_to_cart, etc.)"
+        tests:
+          - not_null
+      - name: event_timestamp
+        description: "Timestamp when event occurred"
+        tests:
+          - not_null
+      - name: page_url
+        description: "URL where event occurred"
+      - name: device_type
+        description: "Device type used for the event"
+      - name: browser
+        description: "Browser used for the event"
+      - name: customer_name
+        description: "Customer name (from customers table)"
+      - name: customer_email
+        description: "Customer email (from customers table)"
+      - name: url_domain
+        description: "Extracted domain from page_url"
+      - name: device_category
+        description: "Classified device category: Mobile (includes mobile/tablet) or Desktop"
+        tests:
+          - accepted_values:
+              values: ['Mobile', 'Desktop', 'Other']
+      - name: is_conversion
+        description: "Boolean flag: true for conversion events (purchase, checkout)"
+      - name: event_sequence_in_session
+        description: "Sequence number of this event within its session"
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
+
+  - name: silver_order_items
+    description: "Silver layer - Cleaned order line items with pricing validation and profit calculations"
+    columns:
+      - name: order_item_id
+        description: "Unique order item identifier"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Associated order ID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_orders')
+              field: order_id
+      - name: product_id
+        description: "Associated product ID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_products')
+              field: product_id
+      - name: quantity
+        description: "Quantity ordered"
+        tests:
+          - not_null
+      - name: unit_price
+        description: "Price per unit at time of order"
+        tests:
+          - not_null
+      - name: discount
+        description: "Discount amount applied"
+      - name: line_total
+        description: "Total for this line item (from source)"
+      - name: product_name
+        description: "Product name (from products table)"
+      - name: product_category
+        description: "Product category (from products table)"
+      - name: category_group
+        description: "Category group (from products table)"
+      - name: product_cost
+        description: "Product cost (from products table)"
+      - name: customer_id
+        description: "Customer who placed the order (from orders table)"
+      - name: order_date
+        description: "Date order was placed (from orders table)"
+      - name: gross_line_total
+        description: "Calculated gross line total: quantity * unit_price"
+      - name: net_line_total
+        description: "Calculated net line total: quantity * unit_price - discount"
+      - name: line_total_is_valid
+        description: "Data quality flag: true if line_total matches calculation"
+      - name: line_profit
+        description: "Profit for this line item: net_line_total - (quantity * product_cost)"
+      - name: line_profit_margin_pct
+        description: "Profit margin percentage for this line item"
+      - name: discount_pct
+        description: "Discount as percentage of gross line total"
+      - name: price_different_from_catalog
+        description: "Flag indicating if unit_price differs from current catalog price"
+      - name: processed_at
+        description: "Timestamp when data was processed into silver layer"
