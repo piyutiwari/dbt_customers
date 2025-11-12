@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: raw_data
     description: "Raw data source - could be from external systems, APIs, or file uploads"
-    schema: public
+    schema: bronze
     tables:
       - name: raw_customers
         description: "Raw customer data"

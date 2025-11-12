@@ -15,10 +15,6 @@ dev = [
     "sqlfluff-templater-dbt>=3.0.0",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [tool.uv]
 dev-dependencies = [
     "sqlfluff>=3.0.0",

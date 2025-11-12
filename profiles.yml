@@ -4,7 +4,7 @@ postgres_medallion:
     dev:
       type: postgres
       host: localhost
-      port: 5432
+      port: 5434
       user: "{{ env_var('POSTGRES_USER', 'postgres') }}"
       password: "{{ env_var('POSTGRES_PASSWORD', 'postgres') }}"
       dbname: "{{ env_var('POSTGRES_DB', 'medallion_db') }}"
@@ -15,7 +15,7 @@ postgres_medallion:
     prod:
       type: postgres
       host: localhost
-      port: 5432
+      port: 5434
       user: "{{ env_var('POSTGRES_USER', 'postgres') }}"
       password: "{{ env_var('POSTGRES_PASSWORD', 'postgres') }}"
       dbname: "{{ env_var('POSTGRES_DB', 'medallion_db') }}"
