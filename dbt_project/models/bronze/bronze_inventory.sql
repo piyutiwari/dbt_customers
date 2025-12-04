@@ -18,4 +18,4 @@ SELECT
     last_restocked_at,
     updated_at,
     CURRENT_TIMESTAMP as loaded_at
-FROM {{ source('raw_data', 'raw_inventory') }}
+FROM {{ source('raw_data', 'sample_raw_inventory') }}

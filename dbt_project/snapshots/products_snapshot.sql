@@ -13,6 +13,6 @@
 -- Tracks: price changes, cost changes, supplier changes, category changes
 -- Use cases: historical price analysis, profit margin trends, supplier relationship history
 
-SELECT * FROM {{ source('raw_data', 'raw_products') }}
+SELECT * FROM {{ source('raw_data', 'sample_raw_products') }}
 
 {% endsnapshot %}

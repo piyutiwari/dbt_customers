@@ -13,6 +13,6 @@
 -- Tracks: inventory level changes, restock events, reorder point adjustments
 -- Use cases: stock level trends, restock pattern analysis, inventory velocity metrics
 
-SELECT * FROM {{ source('raw_data', 'raw_inventory') }}
+SELECT * FROM {{ source('raw_data', 'sample_raw_inventory') }}
 
 {% endsnapshot %}

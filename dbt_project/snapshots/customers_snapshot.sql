@@ -14,6 +14,6 @@
 -- Use cases: customer audit trail, data quality monitoring
 -- Note: Using created_at as updated_at timestamp. Consider adding an actual updated_at field to the source for better change tracking.
 
-SELECT * FROM {{ source('raw_data', 'raw_customers') }}
+SELECT * FROM {{ source('raw_data', 'sample_raw_customers') }}
 
 {% endsnapshot %}

@@ -18,4 +18,4 @@ SELECT
     discount,
     line_total,
     CURRENT_TIMESTAMP as loaded_at
-FROM {{ source('raw_data', 'raw_order_items') }}
+FROM {{ source('raw_data', 'sample_raw_order_items') }}

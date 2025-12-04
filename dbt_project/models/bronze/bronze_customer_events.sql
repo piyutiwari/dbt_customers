@@ -20,4 +20,4 @@ SELECT
     event_timestamp,
     created_at,
     CURRENT_TIMESTAMP as loaded_at
-FROM {{ source('raw_data', 'raw_customer_events') }}
+FROM {{ source('raw_data', 'sample_raw_customer_events') }}

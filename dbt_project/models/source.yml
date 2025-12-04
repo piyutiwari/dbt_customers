@@ -5,7 +5,7 @@ sources:
     description: "Raw data source - could be from external systems, APIs, or file uploads"
     schema: bronze
     tables:
-      - name: raw_customers
+      - name: sample_raw_customers
         description: "Raw customer data"
         columns:
           - name: customer_id
@@ -19,7 +19,7 @@ sources:
           - name: created_at
             description: "Record creation timestamp"
 
-      - name: raw_orders
+      - name: sample_raw_orders
         description: "Raw order data"
         columns:
           - name: order_id
@@ -33,7 +33,7 @@ sources:
           - name: amount
             description: "Order amount"
 
-      - name: raw_products
+      - name: sample_raw_products
         description: "Raw product catalog data"
         columns:
           - name: product_id
@@ -60,7 +60,7 @@ sources:
           - name: updated_at
             description: "Last update timestamp"
 
-      - name: raw_payments
+      - name: sample_raw_payments
         description: "Raw payment transaction data"
         columns:
           - name: payment_id
@@ -89,7 +89,7 @@ sources:
           - name: updated_at
             description: "Last update timestamp"
 
-      - name: raw_customer_events
+      - name: sample_raw_customer_events
         description: "Raw customer behavioral event data"
         columns:
           - name: event_id
@@ -116,7 +116,7 @@ sources:
           - name: created_at
             description: "Record creation timestamp"
 
-      - name: raw_stores
+      - name: sample_raw_stores
         description: "Raw store location data"
         columns:
           - name: store_id
@@ -147,7 +147,7 @@ sources:
           - name: updated_at
             description: "Last update timestamp"
 
-      - name: raw_inventory
+      - name: sample_raw_inventory
         description: "Raw inventory level data"
         columns:
           - name: inventory_id
@@ -174,7 +174,7 @@ sources:
           - name: updated_at
             description: "Last update timestamp"
 
-      - name: raw_order_items
+      - name: sample_raw_order_items
         description: "Raw order line item data linking orders to products"
         columns:
           - name: order_item_id

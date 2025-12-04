@@ -14,4 +14,4 @@ SELECT
     order_date,
     amount,
     CURRENT_TIMESTAMP as loaded_at
-FROM {{ source('raw_data', 'raw_orders') }}
+FROM {{ source('raw_data', 'sample_raw_orders') }}
